@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head lang="en">
+    <title>Index Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+
+<div class="container">
+
+    <div class="navbar-form navbar-right">
+
+        //TODO: Check if user is admin
+        <div th:if="${session.user == null}">
+            <a class="btn btn-success"th:href="@{/dashboard}">Dashboard</a>
+        </div>
+
+        <div sec:authorize="isAnonymous()">
+            <a class="btn btn-success" th:href="@{/login}">Login</a>
+            <a class="btn btn-primary" th:href="@{/register}">Register</a>
+        </div>
+    </div>
+<h1>News</h1>
+    <div th:if="${not #lists.isEmpty(news)}">
+        <table class="table table-striped">
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Link</th>
+                <th th:if="${session.user != null}">
+                    Save
+                </th>
+            </tr>
+            <tr th:each="n : ${news}">
+                <td th:text="${n.getTitle()}"></td>
+                <td th:text="${n.getDescription()}"></td>
+                <td><a th:href="${n.getUrl()}" th:text="${n.title}"></a></td>
+                <td th:if="${session.user != null}"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+
+</html>
